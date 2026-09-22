@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { formatUnlockDate, getCoreUnlockDate, getGiverName, isCoreStillLocked } from "@/lib/config";
 
+// Recipient unlock status can change at any time (admin reset, new solve),
+// so this must never be served from a cached response — always hit the DB.
+export const dynamic = "force-dynamic";
+
 export async function GET(
   req: NextRequest,
   { params }: { params: { username: string } }
@@ -64,4 +68,3 @@ export async function GET(
     future_message: data.future_message,
   });
 }
-

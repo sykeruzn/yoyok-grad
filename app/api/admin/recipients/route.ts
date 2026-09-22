@@ -4,6 +4,10 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 import { isAdminRequest } from "@/lib/requireAdmin";
 import { buildPuzzleData, DEFAULT_LAYERED_CLUE, normalizeAnswer, PuzzleType } from "@/lib/puzzle";
 
+// Recipient rows (unlocked, attempt_count, etc.) change constantly from the
+// dashboard itself and from live visitors — never serve a cached response.
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "not_authorized" }, { status: 401 });
